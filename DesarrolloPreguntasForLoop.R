@@ -116,25 +116,24 @@ empresas_latam <- rbind(grandes_chi, grandes_col, grandes_per,
 
 names(empresas_latam)
 
-str(empresas_latam$fecha) #caracter
-str(empresas_latam$pais) #caracter
-str(empresas_latam$ingresos) #numerico
-str(empresas_latam$costos) #numerico
-str(empresas_latam$Porcentaje_Mujeres) #numerico
-str(empresas_latam$exportaciones) #numerico
-str(empresas_latam$importaciones) #numerico
-str(empresas_latam$endeudamiento) #numerico
-str(empresas_latam$morosidad) #numerico
-str(empresas_latam$reservas) #numerico
-str(empresas_latam$spread) #numerico
-str(empresas_latam$tasa_interes) #numerico
-str(empresas_latam$tamanio) #caracter
+str(empresas_latam$fecha) #character
+str(empresas_latam$pais) #character
+str(empresas_latam$ingresos) #numeric
+str(empresas_latam$costos) #numeric
+str(empresas_latam$Porcentaje_Mujeres) #numeric
+str(empresas_latam$exportaciones) #numeric
+str(empresas_latam$importaciones) #numeric
+str(empresas_latam$endeudamiento) #numeric
+str(empresas_latam$morosidad) #numeric
+str(empresas_latam$reservas) #numeric
+str(empresas_latam$spread) #numeric
+str(empresas_latam$tasa_interes) #numeric
+str(empresas_latam$tamanio) #character
 
 
 ### ejercicio 3 ###
 
 # observaciones Peru v/s Chie
-
 
 {
   obs_chile <- 0
@@ -211,7 +210,7 @@ print(paste("Segun los ingresos de explotación, Chile tiene menos ingresos, que 
 {
   variable <- c(0)
   empresas_latam <- cbind(empresas_latam, variable)
-  
+
   
   for (posicion in 1:length(empresas_latam$pais)){
     if(empresas_latam$pais[posicion]=="chile"){
