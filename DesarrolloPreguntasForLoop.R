@@ -43,17 +43,11 @@ grandes_chile <- cbind(grandes_chile, tamanio)
 grandes_colombia <- cbind(grandes_colombia, tamanio)
 grandes_peru <- cbind(grandes_peru, tamanio)
 
-##Eliminar variable repetida
-grandes_chile<- grandes_chile[ , -c(14)]
 
 tamanio <- c("mediana")
 medianas_chile <- cbind(medianas_chile, tamanio)
 medianas_colombia <- cbind(medianas_colombia, tamanio)
 medianas_peru <- cbind(medianas_peru, tamanio)
-
-medianas_chile<- medianas_chile[ , -c(13)]
-medianas_colombia<- medianas_colombia[ , -c(13)]
-medianas_peru<- medianas_peru[ , -c(13)]
 
 
 tamnaio<- c("micro")
@@ -61,11 +55,6 @@ micro_chile <- cbind(micro_chile, tamanio)
 micro_colombia <- cbind(micro_colombia, tamanio)
 micro_peru <- cbind(micro_peru, tamanio)
 
-micro_chile <- micro_chile[ , -c(13,14)]
-micro_colombia <- micro_colombia[ , -c(13,14)]
-micro_peru <- micro_peru[ , -c(13,14)]
-
-#####################################################tamanio micro=mediana######### corregir
 
 tamanio<- c("pequena")
 pequena_chile <- cbind(pequena_chile, tamanio)
@@ -75,7 +64,6 @@ pequena_peru <- cbind(pequena_peru, tamanio)
 
 
 ### ejercicio 2 ###
-
 
 
 ##corregir nombre de variables
@@ -169,17 +157,114 @@ str(empresas_latam$tamanio) #caracter
 
 ##pais con mayores ingresos
 
+ingresos_chi <- empresas_latam %>% select(ingresos, pais) %>%
+  filter(pais == "chile") 
+ingresos_col <- empresas_latam %>% select(ingresos, pais) %>%
+  filter(pais == "colombia") 
+ingresos_per <- empresas_latam %>% select(ingresos, pais) %>%
+  filter(pais == "peru")
+
+
+VectorIngresos <- c(sum(ingresos_chi[1]), sum(ingresos_col[1]),sum(ingresos_per[1]))
+
+
+###orden de menos a mayor 
+
+numeroingresos <- function(VectorIngresos){
+  if(VectorIngresos[1] > VectorIngresos[2]){
+    temporal <- VectorIngresos[1]
+    VectorIngresos[1] <- VectorIngresos[2]
+    VectorIngresos[2] <- temporal
+  } 
+  if(VectorIngresos[2] > VectorIngresos[3]){
+    temporal <- VectorIngresos[2]
+    VectorIngresos[2] <- VectorIngresos[3]
+    VectorIngresos[3] <- temporal
+  } 
+  if(VectorIngresos[1] > VectorIngresos[2]){
+    temporal <- VectorIngresos[1]
+    VectorIngresos[1] <- VectorIngresos[2]
+    VectorIngresos[2] <- temporal
+  } 
+  if(VectorIngresos[2] > VectorIngresos[3]){
+    temporal <- VectorMuestra[2]
+    VectorIngresos[2] <- VectorIngresos[3]
+    VectorIngresos[3] <- temporal
+  }
+  return(VectorIngresos)
+}
+
+## resultado vector
+vec <- numeroingresos(VectorIngresos)
+print(paste("Segun los ingresos de explotación, Chile tiene menos ingresos, que ascienden a ",
+            vec[1], ", Perú le sigue con",vec[2],", y el pais con mayor ingresos por explotacion fue Colombia con",
+            vec[3]))
+
+
+## ejercicio 5
+
+## Caso Chile, multilplicar tasa por factor 0,1
+## Caso Peru, sumar a la tasa 0,3
+## Caso Colombia, dividir tasa por 10
+
+
+{
+  variable <- c(0)
+  empresas_latam <- cbind(empresas_latam, variable)
+  
+  
+  for (posicion in 1:length(empresas_latam$pais)){
+    if(empresas_latam$pais[posicion]=="chile"){
+      empresas_latam$variable[posicion] <- empresas_latam$tasa_interes[posicion]*0.1
+    }else if(empresas_latam$pais[posicion]=="peru"){
+      empresas_latam$variable[posicion] <- empresas_latam$tasa_interes[posicion]+0.3
+    }else if(empresas_latam$pais[posicion]=="colombia"){
+      empresas_latam$variable[posicion] <- empresas_latam$tasa_interes[posicion]/10
+    }
+  }
+}
+
+
+## ejercicio 6
+
+# Reemplazar exportaciones con 1 cuando es mayor a 2,1, 
+# Reemplazar con un 2 cuando es menor 2,1 
+# Reemplazar con un 3 cuando es igual a 2,1
+# Redondear al primer decimal la variable
+
+
+for (posicion in 1:length(empresas_latam$exportaciones)) {
+  if(empresas_latam$exportaciones[posicion] > 2.1){
+    empresas_latam$exportaciones[posicion] <- 1
+  }else if(empresas_latam$exportaciones[posicion] < 2.1){
+    empresas_latam$exportaciones[posicion] <- 2
+  }else if(empresas_latam$exportaciones[posicion] == 2.1){
+    empresas_latam$exportaciones[posicion] <- 3
+  }
+}
 
 
 
+### ejercicio 7 
 
+#boxplot 
 
+empresas_latam %>%
+  ggplot(aes(x=tamanio, y=morosidad, fill=tamanio)) + 
+  geom_boxplot() + ggtitle("Nivel de morosidada")
 
+empresas_latam %>%
+  ggplot(aes(x=tamanio, y=endeudamiento, fill=tamanio)) + 
+  geom_boxplot() + ggtitle("Nivel de morosidada")
 
+empresas_latam %>%
+  ggplot(aes(x=tamanio, y=ingresos, fill=tamanio)) + 
+  geom_boxplot() + ggtitle("Nivel de morosidada")
 
+empresas_latam %>%
+  ggplot(aes(x=tamanio, y=costos)) + 
+  geom_boxplot() + ggtitle("Nivel de morosidada")
 
-
-
-
+#### Independiente del tamanio de la empresa sea esta grande, mediana, micro o pequena poseen igual distribucion de costos, ingresos endeudamiento e importaciones
 
 
